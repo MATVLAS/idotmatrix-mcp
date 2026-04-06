@@ -37,6 +37,15 @@ A [FastMCP](https://github.com/jlowin/fastmcp) server that exposes iDotMatrix LE
 | `show_scoreboard` | Two-player scoreboard (0-999) |
 | `countdown` | Countdown timer (start/pause/restart/disable) |
 | `chronograph` | Stopwatch (start/pause/resume/reset) |
+| `draw_frame` | Draw a custom 32x32 pixel frame |
+| `clear_screen` | Turn all pixels off (black screen) |
+| `show_effect` | Show animated effects (rainbow, random pixels, etc.) |
+| `pixel_fill_start` | Start pixel fill animation (1 vivid pixel/sec, loops) |
+| `pixel_fill_stop` | Stop pixel fill animation |
+| `game_of_life_start` | Start Conway's Game of Life (smart seeds, death trails) |
+| `game_of_life_stop` | Stop Game of Life |
+| `timer_enable` | Enable the Claude Code timer daemon |
+| `timer_disable` | Disable timer daemon and free the LED panel |
 
 ### Usage
 

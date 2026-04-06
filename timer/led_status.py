@@ -6,6 +6,7 @@ Writes status to /tmp/led_panel_status.json and manages the timer daemon.
 """
 import json
 import os
+import signal
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -14,6 +15,7 @@ STATUS_FILE = "/tmp/led_panel_status.json"
 WAITING_FLAG = "/tmp/led_panel_waiting.flag"
 TIMER_SCRIPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "led_timer.py")
 PID_FILE = "/tmp/led_timer.pid"
+DISABLED_FLAG = "/tmp/led_timer.disabled"
 
 
 def is_timer_running():
@@ -78,13 +80,36 @@ def main():
     with open(STATUS_FILE, "w") as f:
         json.dump(status, f)
 
-    if mode == "working" and not is_timer_running():
+    if mode == "working" and not is_timer_running() and not os.path.exists(DISABLED_FLAG):
         subprocess.Popen(
             [sys.executable, TIMER_SCRIPT, "run"],
             start_new_session=True,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
+    elif mode == "enable":
+        try:
+            os.remove(DISABLED_FLAG)
+        except OSError:
+            pass
+        print("Timer enabled")
+        return
+    elif mode == "disable":
+        open(DISABLED_FLAG, "w").close()
+        # Kill running daemon
+        if is_timer_running():
+            try:
+                with open(PID_FILE) as f:
+                    pid = int(f.read().strip())
+                os.kill(pid, signal.SIGTERM)
+            except (ProcessLookupError, ValueError, PermissionError):
+                pass
+            try:
+                os.remove(PID_FILE)
+            except OSError:
+                pass
+        print("Timer disabled and stopped")
+        return
 
 
 if __name__ == "__main__":
