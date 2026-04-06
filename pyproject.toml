@@ -1,0 +1,12 @@
+[project]
+name = "led-panel"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp",
+    "idotmatrix==0.0.9",
+    "bleak",
+    "pillow",
+    "numpy",
+]

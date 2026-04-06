@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[oc]
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.venv
+
+# IDE / OS
+.DS_Store
+
+# Claude Code
+.claude/
+
+# Temp files
+*.tmp
+*.pid
